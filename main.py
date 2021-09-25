@@ -23,7 +23,7 @@ def map_to_array(file):
         for line in lines:
             # remove the new line
             line = line[:len(line)-1]
-            map_arr.append(line.split(' '))
+            map_arr.append(list(line))
 
     return map_arr
 
