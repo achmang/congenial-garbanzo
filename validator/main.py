@@ -49,7 +49,6 @@ def inputs_to_dict(file):
 
         return input_dict
 
-
 def map_to_array(file):
     map_arr = []
     with open(path + file, "r") as f:
@@ -62,10 +61,30 @@ def map_to_array(file):
 
     return map_arr
 
+def map_lookup(x, y, map):
+    try:
+        return map[x][y]
+    except:
+        print("out of bounds")
+
+def validate_map_size(width, height, map_arr):
+    if height != len(map):
+        return False
+    
+    for row in map_arr:
+        if width != len(row):
+            return False
+
+    return True
+
+def validate_inputs(inputs_dict):
+    
 
 if __name__ == "__main__":
     all_files = os.listdir(path)
     for file in all_files:
-        # print(map_to_array(file))
-        print(inputs_to_dict(file))
-
+       map_arr = map_to_array(file)
+       inputs_dict = inputs_to_dict(file)
+       width = inputs_dict["map_size"]["width"]
+       height = inputs_dict["map_size"]["height"]
+       validate_map_size(width, height, map_arr)
