@@ -24,6 +24,11 @@ terrain_cost = {
 
 customer_offices = []
 
+map_size = {
+    "width": 20,
+    "height": 11
+}
+
 def map_to_array(file):
     map_arr = []
     with open(inputs_path + file, "r") as f:
@@ -76,6 +81,12 @@ def path_cost(map, path):
         print(move)
         print(coordinate)
 
+        # Checking if path is out of the map, if so, this path is incorrect and scores 0
+        if coordinate[0] < 0 or coordinate[1] < 0:
+            return 0
+        elif coordinate[0] > map_size["height"] or coordinate[1] > map_size["width"]:
+            return 0
+
         # checking what the terrain is in this coordinate
         terrain = map[coordinate[0]][coordinate[1]]
 
@@ -83,13 +94,36 @@ def path_cost(map, path):
         cost += terrain_cost.get(terrain)
 
     score = 0
-    if coordinate in customer_offices["coordinate"]:
-        score = customer_offices["reward"] - cost
+    for customer_office in customer_offices:
+        if coordinate in customer_office["coordinate"]:
+            score = customer_office["reward"] - cost
+            customer_office["reached"] = True
 
     if score < 0:
         return 0
     else:
         return score
+
+
+def calculate_bonus():
+    total_bonus = 0
+    for customer_office in customer_offices:
+        if not customer_office["reached"]:
+            return 0
+
+        total_bonus += customer_office["reward"]
+
+    return total_bonus
+
+
+def chebyshev(reply_coord, service_coord):
+    x_diff = reply_coord[0] - service_coord[0]
+    y_diff = reply_coord[1] - service_coord[1]
+
+    if x_diff > y_diff:
+        return x_diff
+
+    return y_diff
 
 
 if __name__ == "__main__":
@@ -106,7 +140,15 @@ if __name__ == "__main__":
         for out_file in output_files:
             path_array = paths_to_array(out_file)
 
+            score = 0
             for path in path_array:
-                path_cost(map, path)
+                score += path_cost(map, path)
+
+            score += calculate_bonus()
+
+
+
+
+
 
 
