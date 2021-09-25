@@ -22,6 +22,8 @@ terrain_cost = {
     "T": 50
 }
 
+customer_offices = []
+
 def map_to_array(file):
     map_arr = []
     with open(inputs_path + file, "r") as f:
@@ -80,7 +82,14 @@ def path_cost(map, path):
         # increasing cost of this path
         cost += terrain_cost.get(terrain)
 
-    return cost
+    score = 0
+    if coordinate in customer_offices["coordinate"]:
+        score = customer_offices["reward"] - cost
+
+    if score < 0:
+        return 0
+    else:
+        return score
 
 
 if __name__ == "__main__":
