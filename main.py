@@ -17,10 +17,12 @@ def validate_input(file):
 
 def map_to_array(file):
     map_arr = []
-
     with open(path + file, "r") as f:
+        # map starts at this part
         lines = f.readlines()[8:]
         for line in lines:
+            # remove the new line
+            line = line[:len(line)-1]
             map_arr.append(line.split(' '))
 
     return map_arr
