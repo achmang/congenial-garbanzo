@@ -13,7 +13,18 @@ def validate_input(file):
                     break
         return True
 
-# def init_values(file):
+def inputs_to_dict(file):
+
+    input_dict = {
+
+    }
+
+    with open(path + file, "r") as f:
+        # map starts at this part
+        lines = f.readlines()[:8]
+        for line in lines:
+            # remove the new line
+            line = line[:len(line)-1]
 
 def map_to_array(file):
     map_arr = []
@@ -21,7 +32,7 @@ def map_to_array(file):
         # map starts at this part
         lines = f.readlines()[8:]
         for line in lines:
-            # remove the new line
+            # remove the new line char '/n'
             line = line[:len(line)-1]
             map_arr.append(list(line))
 
