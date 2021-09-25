@@ -116,6 +116,16 @@ def calculate_bonus():
     return total_bonus
 
 
+def chebyshev(reply_coord, service_coord):
+    x_diff = reply_coord[0] - service_coord[0]
+    y_diff = reply_coord[1] - service_coord[1]
+
+    if x_diff > y_diff:
+        return x_diff
+
+    return y_diff
+
+
 if __name__ == "__main__":
     # reading in inputs
     input_files = os.listdir(inputs_path)
