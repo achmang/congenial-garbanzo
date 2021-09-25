@@ -2,8 +2,6 @@ import os
 
 path = "inputs/"
 
-# TODO
-# add constraints and other checks
 def inputs_to_dict(file):
     # init the struct, make it easier
     input_dict = {
@@ -68,7 +66,13 @@ def map_lookup(x, y, map):
         print("out of bounds")
 
 def validate_map_size(width, height, map_arr):
-    if height != len(map):
+    if height > 2000 or height < 1:
+        return False
+
+    if width > 2000 or width < 1:
+        return False
+
+    if height != len(map_arr):
         return False
     
     for row in map_arr:
@@ -78,13 +82,38 @@ def validate_map_size(width, height, map_arr):
     return True
 
 def validate_inputs(inputs_dict):
+    # check that these match the actual values.
+    office_count = inputs_dict["office_count"]
+    service_count = inputs_dict["services"]
+
+    if len(inputs_dict["office_params"]) != office_count:
+        return False
+    if len(inputs_dict["service_params"]) != service_count:
+        return False
+    if inputs_dict["max_distance"] > 2000 or inputs_dict["max_distance"] < 1:
+        return False
+    if office_count > 500 or office_count < 1:
+        return False
     
+    return True
+
+# def validate_solution(solution):
+
+# def validate_offices(map_arr, input_dict):
+#     # check that reply offices are in a valid location
+#     try:
+#         for i, row in map_arr:
+#             if row
+#     except
+
 
 if __name__ == "__main__":
     all_files = os.listdir(path)
     for file in all_files:
-       map_arr = map_to_array(file)
        inputs_dict = inputs_to_dict(file)
-       width = inputs_dict["map_size"]["width"]
-       height = inputs_dict["map_size"]["height"]
-       validate_map_size(width, height, map_arr)
+        if not validate_inputs(inputs_dict):
+           print("inputs not valid")
+           continue
+        if not validate_map_size(inputs_dict["map_size"]["width"], inputs_dict["map_size"]["height"]):
+            print("inputs not valid")
+            continue
