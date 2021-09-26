@@ -54,7 +54,8 @@ def map_to_array(file):
         lines = f.readlines()[8:]
         for line in lines:
             # remove the new line char '/n'
-            line = line[:len(line)-1]
+            if(line[-1] =='\n'):
+                line = line[:len(line)-1]
             map_arr.append(list(line))
 
     return map_arr
@@ -97,23 +98,83 @@ def validate_inputs(inputs_dict):
     
     return True
 
-# def validate_solution(solution):
+# this int finshed 
+def validate_solution(solution, map_arr):
 
-# def validate_offices(map_arr, input_dict):
-#     # check that reply offices are in a valid location
-#     try:
-#         for i, row in map_arr:
-#             if row
-#     except
+    test_string = "URRRRRUUURRRRDRRRRU"
+    test_string = test_string.split()
+
+    x = 2
+    y = 5
+
+    for i, char in enumerate(test_string):
+        if char == "U":
+            try:
+                x += -1
+                if map_arr[x][y] == "#":
+                    return False
+            except:
+                print("solution invalid, out of bounds")
+                return False
+        if char == "D":
+            try:
+                x += 1
+                if map_arr[x][y] == "#":
+                    return False
+            except:
+                print("solution invalid, out of bounds")
+                return
+        if char == "L":
+            try:
+                y += -1
+                if map_arr[x][y] == "#":
+                    return False
+            except:
+                print("solution invalid, out of bounds")
+                return False
+        if char == "R":
+            try:
+                y+= 1
+                if map_arr[x][y] == "#":
+                    return False
+            except:
+                print("solution invalid, out of bounds")
+                return False
+        
+
+def validate_offices(map_arr, input_dict):
+    for office in input_dict["office_params"]:
+        try:
+            if map_lookup(office["x"], office["y"], map_arr) == "#":
+                return False
+        except:
+            print("")
+    
+    return True
+    
+def map_lookup(x, y, map_arr):
+    try:
+        return map_arr[x][y]
+    except:
+        print("out of bounds " + str(x) + " " + str(y))
 
 
 if __name__ == "__main__":
     all_files = os.listdir(path)
     for file in all_files:
-       inputs_dict = inputs_to_dict(file)
+        inputs_dict = inputs_to_dict(file)
         if not validate_inputs(inputs_dict):
-           print("inputs not valid")
-           continue
-        if not validate_map_size(inputs_dict["map_size"]["width"], inputs_dict["map_size"]["height"]):
             print("inputs not valid")
             continue
+
+        map_arr = map_to_array(file)
+
+        if not validate_map_size(inputs_dict["map_size"]["width"], inputs_dict["map_size"]["height"], map_arr):
+            print("map size not valid")
+            continue
+
+        if not validate_offices(map_arr, inputs_dict):
+            print("offices not valid")
+            continue
+
+        print("file valid")
