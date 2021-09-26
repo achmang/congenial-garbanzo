@@ -153,10 +153,10 @@ def validate_offices(map_arr, input_dict):
     return True
     
 def map_lookup(x, y, map_arr):
-    try:
-        return map_arr[x][y]
-    except:
-        print("out of bounds " + str(x) + " " + str(y))
+    # try:
+    return map_arr[x][y]
+    # except:
+        # print("out of bounds " + str(x) + " " + str(y))
 
 
 if __name__ == "__main__":
